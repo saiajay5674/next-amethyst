@@ -1,26 +1,43 @@
 {
-  "name": "next-amethyst",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "react": "^18",
-    "react-dom": "^18",
-    "next": "14.2.6"
-  },
-  "devDependencies": {
-    "typescript": "^5",
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "postcss": "^8",
-    "tailwindcss": "^3.4.1",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.6"
-  }
+	"name": "next-amethyst",
+	"version": "0.1.0",
+	"private": true,
+	"scripts": {
+		"dev": "next dev",
+		"build": "next build",
+		"start": "next start",
+		"lint": "next lint"
+	},
+	"dependencies": {
+		"@chakra-ui/icons": "^2.1.1",
+		"@chakra-ui/next-js": "^2.2.0",
+		"@chakra-ui/react": "^2.8.2",
+		"@emotion/react": "^11.13.3",
+		"@emotion/styled": "^11.13.0",
+		"bcryptjs": "^2.4.3",
+		"date-fns": "^3.6.0",
+		"framer-motion": "^11.3.29",
+		"jose": "^5.7.0",
+		"jsonwebtoken": "^9.0.2",
+		"mongodb": "^6.8.0",
+		"next": "14.2.6",
+		"plaid": "^26.0.0",
+		"react": "^18",
+		"react-dom": "^18",
+		"react-icons": "^5.3.0",
+		"react-plaid-link": "^3.5.2",
+		"universal-cookie": "^7.2.0"
+	},
+	"devDependencies": {
+		"@types/bcryptjs": "^2.4.6",
+		"@types/jsonwebtoken": "^9.0.6",
+		"@types/node": "^20",
+		"@types/react": "^18",
+		"@types/react-dom": "^18",
+		"eslint": "^8",
+		"eslint-config-next": "14.2.6",
+		"postcss": "^8",
+		"tailwindcss": "^3.4.1",
+		"typescript": "^5"
+	}
 }
