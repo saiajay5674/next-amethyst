@@ -1,5 +1,4 @@
 import { Db, ObjectId } from 'mongodb';
-import { JWT_SECRET } from '@/app/constants/secret';
 import { jwtVerify } from 'jose';
 
 export async function getUserByEmail(mongoDb: Db, email: string) {
@@ -15,7 +14,8 @@ export async function getUserById(mongoDb: Db, id: string) {
 export async function getUserFromSession(session?: string) {
 	if (session) {
 		try {
-			const secret = new TextEncoder().encode(JWT_SECRET); // Make sure to replace this with your actual secret
+			const jwtSecret = process.env.JWT_SECRET_KEY;
+			const secret = new TextEncoder().encode(jwtSecret); // Make sure to replace this with your actual secret
 
 			// Verify the JWT using jose
 			const { payload } = await jwtVerify(session, secret);

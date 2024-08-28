@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Heading, HStack, Input, Link, Stack, Text } from '@chakra-ui/react';
 import { AppLogo } from '../../components/app-logo/AppLogo';
-import SignupForm from './SignupForm';
+import SignUpForm from './SignUpForm';
 
 const SignUpPage = () => {
 	return (
@@ -19,7 +19,7 @@ const SignUpPage = () => {
 						</Text>
 					</Stack>
 				</Stack>
-				<SignupForm />
+				<SignUpForm />
 			</Stack>
 		</Container>
 	);
