@@ -3,7 +3,7 @@ import { cookies } from 'next/headers';
 import { SESSION_COOKIE_NAME } from '@/utils/session';
 import { jwtVerify } from 'jose';
 import { redirect } from 'next/navigation';
-import { Page } from '../constants/page';
+import { Page } from '../../constants/page';
 import TransactionsComponent from './Transactions';
 import { Grid } from '@chakra-ui/react';
 
@@ -17,7 +17,7 @@ const TransactionsPage = async () => {
 	);
 };
 
-export async function getTransactions() {
+async function getTransactions() {
 	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
 	const session = cookies().get(SESSION_COOKIE_NAME);
 

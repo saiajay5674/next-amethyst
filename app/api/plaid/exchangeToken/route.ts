@@ -29,7 +29,7 @@ export const POST = async (req: Request) => {
 	}
 
 	await accounts.saveAccountForUser({
-		userId: user.userId,
+		userId: user.userId as string,
 		accessToken: response.data.access_token,
 		itemId: response.data.item_id,
 	});

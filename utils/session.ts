@@ -5,6 +5,11 @@ export const SESSION_COOKIE_NAME = 'amethyst-session';
 
 const cookiesClient = new Cookies();
 
+interface Session {
+	userId: string;
+	emailAddress: string;
+}
+
 export async function getSession() {
 	const sessionCookie = cookiesClient.get(SESSION_COOKIE_NAME);
 
@@ -15,7 +20,7 @@ export async function getSession() {
 			const secret = new TextEncoder().encode(jwtSecret);
 
 			// Verify the JWT using jose
-			const { payload } = await jwtVerify(sessionCookie, secret);
+			const { payload } = await jwtVerify<Session>(sessionCookie, secret);
 
 			return payload; // Expected to return { userId, emailAddress }
 		} catch (error) {

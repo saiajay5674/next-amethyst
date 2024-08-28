@@ -2,9 +2,16 @@ import React from 'react';
 
 import { Card } from '@chakra-ui/react';
 import { Box, Divider, Heading, Text } from '@chakra-ui/react';
-import Transaction from '@/components/transaction/Transaction';
+import TransactionComponent from '@/components/transaction/TransactionComponent';
+import { Transaction } from '../models/transaction';
 
-const TransactionsComponent = ({ transactions }) => {
+interface TransactionsComponentProps {
+	transactions: Transaction[];
+}
+
+const TransactionsComponent = (props: TransactionsComponentProps) => {
+	const { transactions } = props;
+
 	// Group transactions by date
 	const transactionsByDate = transactions.reduce((acc: Record<string, any[]>, transaction: any) => {
 		const date = new Date(transaction.date).toDateString();
@@ -23,7 +30,7 @@ const TransactionsComponent = ({ transactions }) => {
 						{date}
 					</Text>
 					{transactionsByDate[date].map((transaction, index) => (
-						<Transaction key={index} transaction={transaction} />
+						<TransactionComponent key={index} transaction={transaction} />
 					))}
 				</Box>
 			))}

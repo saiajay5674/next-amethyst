@@ -1,8 +1,13 @@
 import React from 'react';
 import { Card } from '@chakra-ui/react';
 import TransactionDetails from '../transactionDetails/TransactionDetails';
+import { Transaction } from '@/app/models/transaction';
 
-const Transaction = async ({ transaction }) => {
+interface TransactionComponentProps {
+	transaction: Transaction;
+}
+const TransactionComponent = async (props: TransactionComponentProps) => {
+	const { transaction } = props;
 	return (
 		<Card borderColor='gray.200' mb={2}>
 			<TransactionDetails transaction={transaction}></TransactionDetails>
@@ -10,4 +15,4 @@ const Transaction = async ({ transaction }) => {
 	);
 };
 
-export default Transaction;
+export default TransactionComponent;

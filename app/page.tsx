@@ -1,59 +1,14 @@
-'use client';
-
-import { Box, Spinner, Text } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
+import { Box } from '@chakra-ui/react';
+import React from 'react';
 import PlaidLinkButton from '../components/plaid-link-button/PlaidLinkButton';
-import { getSession } from '../utils/session';
-import { useRouter } from 'next/navigation';
-import { Page } from './constants/page';
+import { SESSION_COOKIE_NAME } from '../utils/session';
+import { redirect } from 'next/navigation';
+import { Page } from '../constants/page';
+import { cookies } from 'next/headers';
+import { jwtVerify } from 'jose';
 
-interface Session {
-	userId: string;
-	emailAddress: string;
-}
-
-const HomePage: React.FC = () => {
-	const router = useRouter();
-	const [linkToken, setLinkToken] = useState<string | null>(null);
-	const [loading, setLoading] = useState<boolean>(true);
-	const [session, setSession] = useState<Session | null>(null);
-
-	useEffect(() => {
-		const loadSession = async () => {
-			try {
-				const sessionData = await getSession();
-				if (!sessionData) {
-					router.push(Page.SIGNIN);
-				} else {
-					setSession(sessionData);
-				}
-			} finally {
-				setLoading(false);
-			}
-		};
-
-		loadSession();
-	}, []);
-
-	useEffect(() => {
-		if (session) {
-			const fetchAndSetLinkToken = async () => {
-				const token = await fetchLinkToken(session.userId);
-				setLinkToken(token);
-			};
-
-			fetchAndSetLinkToken();
-		}
-	}, [session]);
-
-	if (loading) {
-		return (
-			<Box>
-				<Spinner size='xl' />
-				<Text>Loading...</Text>
-			</Box>
-		);
-	}
+const HomePage: React.FC = async () => {
+	const linkToken = await fetchLinkToken();
 
 	return (
 		<Box>
@@ -64,8 +19,25 @@ const HomePage: React.FC = () => {
 };
 
 // Fetch the link token
-export async function fetchLinkToken(userId: string): Promise<string> {
+async function fetchLinkToken(): Promise<string> {
 	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+
+	const session = cookies().get(SESSION_COOKIE_NAME);
+
+	let userId;
+	if (session) {
+		try {
+			const jwtSecret = process.env.JWT_SECRET_KEY;
+			const secret = new TextEncoder().encode(jwtSecret);
+			const { payload } = await jwtVerify(session.value, secret);
+			userId = payload.userId;
+		} catch (error) {
+			console.log('Failed to verify JWT:', error);
+			redirect(Page.SIGNIN);
+		}
+	} else {
+		redirect(Page.SIGNIN);
+	}
 
 	const result = await fetch(`${baseUrl}/api/plaid/linkToken`, {
 		method: 'POST',

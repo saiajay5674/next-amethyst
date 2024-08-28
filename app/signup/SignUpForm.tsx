@@ -5,7 +5,7 @@ import { PasswordAttributes, PasswordField } from '../../components/password-fie
 import { isPasswordLengthValid, passwordMatch } from '../../utils/password';
 import { isEmailAddresssValid } from '../../utils/email';
 import { useRouter } from 'next/navigation';
-import { Page } from '../constants/page';
+import { Page } from '../../constants/page';
 import EmailFieldInput from '../../components/email-field/EmailFieldInput';
 
 // Main SignupForm component

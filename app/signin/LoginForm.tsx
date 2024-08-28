@@ -4,7 +4,7 @@ import { Box, Button, Checkbox, FormControl, FormLabel, HStack, Input, Stack } f
 import { PasswordAttributes, PasswordField } from '../../components/password-field/PasswordField';
 import EmailFieldInput from '../../components/email-field/EmailFieldInput';
 import { isEmailAddresssValid } from '../../utils/email';
-import { Page } from '../constants/page';
+import { Page } from '../../constants/page';
 import { useRouter } from 'next/navigation';
 
 const LoginForm = () => {

@@ -1,12 +1,14 @@
 import { RemovedTransaction, Transaction, TransactionsSyncRequest } from 'plaid';
 import * as accounts from './accounts.handler';
 import plaidClient from '../clients/plaid';
-import { ca } from 'date-fns/locale';
 import mongoDbClient from '../clients/mongoDb';
-import { ObjectId } from 'mongodb';
 
 export async function fetchTransactionUpdate(item_id: string) {
 	const account = await accounts.getAccountByPlaidAccountId(item_id);
+
+	if (!account) {
+		return;
+	}
 
 	const { _id, userId, plaidToken, plaidLastCursor } = account;
 
@@ -41,11 +43,11 @@ export async function fetchTransactionUpdate(item_id: string) {
 			cursor = data.next_cursor;
 		}
 	} catch (error) {
-		console.error(`Error fetching transactions: ${error.message}`);
+		console.error(`Error fetching transactions: ${error}`);
 		cursor = plaidLastCursor;
 	}
 
-	batchSaveTransactionsForAccount(_id, userId, added);
+	batchSaveTransactionsForAccount(_id.toString(), userId, added);
 }
 
 export async function batchSaveTransactionsForAccount(accountId: string, userId: string, transactions: Transaction[]) {
