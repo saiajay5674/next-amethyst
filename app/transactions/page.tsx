@@ -1,9 +1,7 @@
 import React from 'react';
-import Transaction from '../../components/transaction/Transaction';
 import { cookies } from 'next/headers';
 import { SESSION_COOKIE_NAME } from '@/utils/session';
 import { jwtVerify } from 'jose';
-import { JWT_SECRET } from '../constants/secret';
 import { redirect } from 'next/navigation';
 import { Page } from '../constants/page';
 import TransactionsComponent from './Transactions';
@@ -26,7 +24,8 @@ export async function getTransactions() {
 	let userId;
 	if (session) {
 		try {
-			const secret = new TextEncoder().encode(JWT_SECRET);
+			const jwtSecret = process.env.JWT_SECRET_KEY;
+			const secret = new TextEncoder().encode(jwtSecret);
 			const { payload } = await jwtVerify(session.value, secret);
 			userId = payload.userId;
 		} catch (error) {

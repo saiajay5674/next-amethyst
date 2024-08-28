@@ -18,8 +18,8 @@ const TransactionsComponent = ({ transactions }) => {
 	return (
 		<Card mb={2} m={10} p={1}>
 			{Object.keys(transactionsByDate).map((date) => (
-				<Box key={date} my={6} mx={8}>
-					<Text as='h4' size='sm' textColor='gray.500' py={1}>
+				<Box key={date} my={5} mx={8}>
+					<Text as='h3' size='sm' textColor='gray.500' py={1}>
 						{date}
 					</Text>
 					{transactionsByDate[date].map((transaction, index) => (

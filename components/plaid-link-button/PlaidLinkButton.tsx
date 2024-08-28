@@ -1,5 +1,4 @@
 'use client';
-import { getSession } from '@/app/utils/session';
 import { Button } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 import { usePlaidLink, PlaidLinkOptions, PlaidLinkOnSuccess, PlaidLinkOnSuccessMetadata } from 'react-plaid-link';

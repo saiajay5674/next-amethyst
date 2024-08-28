@@ -1,6 +1,5 @@
 import Cookies from 'universal-cookie';
 import { jwtVerify } from 'jose';
-import { JWT_SECRET } from '../app/constants/secret';
 
 export const SESSION_COOKIE_NAME = 'amethyst-session';
 
@@ -11,8 +10,9 @@ export async function getSession() {
 
 	if (sessionCookie) {
 		try {
+			const jwtSecret = process.env.JWT_SECRET_KEY;
 			// Convert the JWT_SECRET to a Uint8Array
-			const secret = new TextEncoder().encode(JWT_SECRET);
+			const secret = new TextEncoder().encode(jwtSecret);
 
 			// Verify the JWT using jose
 			const { payload } = await jwtVerify(sessionCookie, secret);
@@ -27,12 +27,3 @@ export async function getSession() {
 
 	return undefined;
 }
-
-// export function getSessionSSR() {
-// 	const sessionCookie = cookies().get(SESSION_COOKIE_NAME);
-
-// 	if (sessionCookie) {
-// 		return jwt.verify(sessionCookie.value, JWT_SECRET);
-// 	}
-// 	return undefined;
-// };

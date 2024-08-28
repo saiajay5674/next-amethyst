@@ -2,7 +2,6 @@ import { MongoClient, ServerApiVersion } from 'mongodb';
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { JWT_SECRET } from '@/app/constants/secret';
 const password = 'H4bsxAxAZuviW0Oq';
 const URI = `mongodb+srv://saiajay5674:${password}@test.hye7g.mongodb.net/?retryWrites=true&w=majority&appName=Test`;
 
@@ -50,7 +49,9 @@ export const POST = async (req: Request) => {
 			email: user.email,
 		};
 
-		const token = await jwt.sign(tokenData, JWT_SECRET, { expiresIn: '3h' });
+		const jwtSecret: string = process.env.JWT_SECRET_KEY || 'secret';
+
+		const token = await jwt.sign(tokenData, jwtSecret, { expiresIn: '3h' });
 
 		// Return a success response
 		const response = NextResponse.json({ message: 'Login successful' });
