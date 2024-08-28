@@ -13,6 +13,8 @@ import {
 	Input,
 	List,
 	ListItem,
+	Tag,
+	TagLabel,
 } from '@chakra-ui/react';
 
 interface Transaction {
@@ -20,16 +22,14 @@ interface Transaction {
 	amount: number;
 	iso_currency_code: string;
 	name: string;
-	payeeOrCreditor: string;
 	category: string;
 	account: string;
 	notes: string;
+	approved: boolean;
 }
 
 function TransactionDetails({ transaction }: { transaction: Transaction }) {
 	const [isOpen, setIsOpen] = useState(false);
-	const [selectedCategory, setSelectedCategory] = useState(transaction.category);
-	const [filteredCategories, setFilteredCategories] = useState<string[]>([]);
 
 	// Format the date to a human-readable format
 	const formattedDate = formatTimeStamp(transaction.date, 'MMM do, yyyy');
@@ -44,104 +44,36 @@ function TransactionDetails({ transaction }: { transaction: Transaction }) {
 		currency: transaction.iso_currency_code,
 	}).format(transaction.amount);
 
-	// Define categories with emojis
-	const categories = {
-		Groceries: '🛒 Groceries',
-		Food: '🍔 Food',
-		Transport: '🚗 Transport',
-		Entertainment: '🎉 Entertainment',
-		Health: '💊 Health',
-		Shopping: '🛍️ Shopping',
-		Other: '❓ Other',
-	};
-
-	const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const value = e.target.value;
-		setSelectedCategory(value);
-		if (value) {
-			const filtered = Object.values(categories).filter((category) =>
-				category.toLowerCase().includes(value.toLowerCase())
-			);
-			setFilteredCategories(filtered);
-		} else {
-			setFilteredCategories([]);
-		}
-	};
-
-	const handleCategorySelect = (category: string) => {
-		setSelectedCategory(category);
-		setFilteredCategories([]);
-	};
-
 	return (
 		<Accordion allowToggle onChange={handleToggle}>
 			<AccordionItem border='none'>
-				<AccordionButton padding='16px' _expanded={{ bg: 'teal.100' }}>
+				<AccordionButton padding='16px' _expanded={{ fontWeight: 'bold', fontSize: 'lg', bgColor: 'gray.50' }}>
 					<Flex justify='space-between' alignItems='center' flex='1' textAlign='left'>
 						<Flex maxWidth='300px' flex='1'>
-							<Text
-								fontSize='md'
-								overflow='hidden'
-								textOverflow='ellipsis'
-								whiteSpace='nowrap'
-								maxWidth='300px'>
-								{transaction.name}
-							</Text>
+							<Text whiteSpace='nowrap'>{transaction.name}</Text>
 						</Flex>
-						<Flex justify='center' flex='1' maxWidth='200px'>
-							<Box position='relative' width='100%'>
-								<Input
-									value={selectedCategory}
-									onChange={handleCategoryChange}
-									placeholder='Category'
-									size='sm'
-									textAlign='center'
-								/>
-								{filteredCategories.length > 0 && (
-									<List
-										position='absolute'
-										top='100%'
-										left='0'
-										width='100%'
-										bg='white'
-										border='1px solid'
-										borderColor='gray.200'
-										zIndex='1000'
-										mt={1}
-										borderRadius='md'>
-										{filteredCategories.map((category, index) => (
-											<ListItem
-												key={index}
-												padding='8px'
-												cursor='pointer'
-												_hover={{ bg: 'gray.100' }}
-												onClick={() => handleCategorySelect(category)}>
-												{category}
-											</ListItem>
-										))}
-									</List>
-								)}
-							</Box>
-						</Flex>
-						<Flex justify='flex-end' flex='1' maxWidth='100px'>
+						{!transaction.approved && (
+							<Flex justify='center' alignItems='center' flex={1}>
+								<Tag size='md' variant='outline' colorScheme='orange'>
+									<TagLabel>Pending Review</TagLabel>
+								</Tag>
+							</Flex>
+						)}
+						<Flex justify='flex-end' flex='1'>
 							<Text fontSize='md' fontWeight='bold' color={amountColor}>
 								{formattedAmount}
 							</Text>
 						</Flex>
 					</Flex>
-					<AccordionIcon />
+					<AccordionIcon ml={2} />
 				</AccordionButton>
-				<AccordionPanel padding='16px'>
-					<Text fontSize='lg' fontWeight='bold'>
-						{transaction.payeeOrCreditor}
-					</Text>
+				<AccordionPanel>
 					<Box paddingTop={2}>
-						<Text>
-							<strong>Account:</strong> {transaction.account}
-						</Text>
-						<Text>
-							<strong>Notes:</strong> {transaction.notes}
-						</Text>
+						<Text>Account: Chase Checking - 7689</Text>
+						<Flex alignItems='center' gap={2}>
+							<Text>Notes:</Text>
+							<Input variant='unstyled' placeholder='Add notes here' />
+						</Flex>
 					</Box>
 				</AccordionPanel>
 			</AccordionItem>

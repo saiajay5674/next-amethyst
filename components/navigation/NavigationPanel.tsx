@@ -26,7 +26,7 @@ const NavigationPanel = () => {
 			left={0}
 			top={0}
 			height='100vh'
-			bg='gray.800'
+			bg='gray.700'
 			color='white'
 			display='flex'
 			flexDirection='column'

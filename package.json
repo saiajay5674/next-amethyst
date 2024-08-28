@@ -13,7 +13,7 @@
 		"@chakra-ui/next-js": "^2.2.0",
 		"@chakra-ui/react": "^2.8.2",
 		"@emotion/react": "^11.13.3",
-		"@emotion/styled": "^11.13.0",
+		"@fontsource/comfortaa": "^5.0.21",
 		"bcryptjs": "^2.4.3",
 		"date-fns": "^3.6.0",
 		"framer-motion": "^11.3.29",

@@ -1,3 +1,4 @@
+'use client';
 import { Providers } from './providers';
 import NavigationPanel from '../components/navigation/NavigationPanel';
 import { Box, Container, Flex } from '@chakra-ui/react';
@@ -14,7 +15,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 						transition='margin-left 0.3s'
 						mr={0}
 						p={4} // Padding to ensure content is not too close to the edges
-					>
+						bgColor='gray.50'>
 						{children}
 					</Box>
 				</Providers>
