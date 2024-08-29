@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 
 interface TransactionsSummaryProps {
 	transactions: any[]; // Define a proper type based on your transaction structure
-	onFilterUpdate: (searchTerm: string, filter: string) => void;
+	onFilterUpdate: (searchTerm: string, filter: 'all' | 'needsReview' | 'date') => void;
 }
 
 const TransactionsSummary = ({ transactions, onFilterUpdate }: TransactionsSummaryProps) => {
