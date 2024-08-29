@@ -11,11 +11,13 @@ import {
 	AccordionIcon,
 	Box,
 	Input,
-	List,
-	ListItem,
 	Tag,
 	TagLabel,
+	IconButton,
+	Tooltip,
+	useToast,
 } from '@chakra-ui/react';
+import { CheckIcon } from '@chakra-ui/icons';
 
 interface Transaction {
 	date: string;
@@ -30,10 +32,16 @@ interface Transaction {
 
 function TransactionDetails({ transaction }: { transaction: Transaction }) {
 	const [isOpen, setIsOpen] = useState(false);
+	const [accordianIndex, setAccordianIndex] = useState(-1);
+	const [isReviewed, setIsReviewed] = useState(transaction.approved);
+	const [name, setName] = useState(transaction.name);
+	const toast = useToast();
 
 	// Format the date to a human-readable format
-	const formattedDate = formatTimeStamp(transaction.date, 'MMM do, yyyy');
-	const handleToggle = () => setIsOpen(!isOpen);
+	const handleToggle = (index: number) => {
+		setAccordianIndex(index);
+		setIsOpen(!isOpen);
+	};
 
 	// Determine color based on whether the amount is positive or negative
 	const amountColor = transaction.amount < 0 ? 'red.500' : 'green.500';
@@ -44,15 +52,63 @@ function TransactionDetails({ transaction }: { transaction: Transaction }) {
 		currency: transaction.iso_currency_code,
 	}).format(transaction.amount);
 
+	// Handle marking the transaction as reviewed and updating the name
+	const markAsReviewed = async () => {
+		try {
+			// Mock API call to update transaction
+			// const response = await fetch('/api/update-transaction', {
+			// 	method: 'POST',
+			// 	headers: {
+			// 		'Content-Type': 'application/json',
+			// 	},
+			// 	body: JSON.stringify({
+			// 		...transaction,
+			// 		name,
+			// 		approved: false,
+			// 	}),
+			// });
+
+			// if (!response.ok) {
+			// 	throw new Error('Failed to update transaction');
+			// }
+
+			// Assuming API call is successful
+			setIsReviewed(true);
+
+			toast({
+				title: 'Transaction updated.',
+				description: 'The transaction has been approved',
+				status: 'success',
+				duration: 2500,
+				isClosable: true,
+			});
+		} catch (error) {
+			toast({
+				title: 'An error occurred.',
+				description: error.message,
+				status: 'error',
+				duration: 3000,
+				isClosable: true,
+			});
+		}
+	};
+
 	return (
-		<Accordion allowToggle onChange={handleToggle}>
+		<Accordion allowToggle onChange={handleToggle} index={accordianIndex}>
 			<AccordionItem border='none'>
 				<AccordionButton padding='16px' _expanded={{ fontWeight: 'bold', fontSize: 'lg', bgColor: 'gray.50' }}>
 					<Flex justify='space-between' alignItems='center' flex='1' textAlign='left'>
 						<Flex maxWidth='300px' flex='1'>
-							<Text whiteSpace='nowrap'>{transaction.name}</Text>
+							<Input
+								variant='unstyled'
+								whiteSpace='nowrap'
+								value={transaction.name}
+								fontWeight={isOpen ? 'bold' : 'normal'}
+								fontSize={isOpen ? 'lg' : 'sm'}
+								onChange={() => markAsReviewed()} // Fix this
+							></Input>{' '}
 						</Flex>
-						{!transaction.approved && (
+						{!isReviewed && (
 							<Flex justify='center' alignItems='center' flex={1}>
 								<Tag size='md' variant='outline' colorScheme='orange'>
 									<TagLabel>Pending Review</TagLabel>
@@ -67,7 +123,7 @@ function TransactionDetails({ transaction }: { transaction: Transaction }) {
 					</Flex>
 					<AccordionIcon ml={2} />
 				</AccordionButton>
-				<AccordionPanel>
+				<AccordionPanel position='relative'>
 					<Box paddingTop={2}>
 						<Text>Account: Chase Checking - 7689</Text>
 						<Flex alignItems='center' gap={2}>
@@ -75,6 +131,25 @@ function TransactionDetails({ transaction }: { transaction: Transaction }) {
 							<Input variant='unstyled' placeholder='Add notes here' />
 						</Flex>
 					</Box>
+					{!isReviewed && (
+						<Tooltip label='Approve'>
+							<IconButton
+								aria-label='Mark as Reviewed'
+								icon={<CheckIcon />}
+								size='sm'
+								colorScheme='green'
+								bgColor='green.400'
+								position='absolute'
+								bottom='10px'
+								right='10px'
+								isRound={true}
+								onClick={() => {
+									markAsReviewed();
+									handleToggle(-1);
+								}}
+							/>
+						</Tooltip>
+					)}
 				</AccordionPanel>
 			</AccordionItem>
 		</Accordion>
