@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import TransactionsSummary from './TransactionsSummary';
+import TransactionsSummary from './transactions-summary/TransactionsSummary';
 import { Transaction } from '../models/transaction';
 import TransactionsCard from './TransactionsCard';
 
@@ -29,7 +29,7 @@ const TransactionsComponent = ({ transactions }: TransactionsComponentProps) => 
 		<>
 			<TransactionsSummary
 				transactions={transactions}
-				onFilterUpdate={(searchTerm, filter) => {
+				onFilterUpdate={(searchTerm, filter: 'all' | 'needsReview' | 'date') => {
 					setSearchTerm(searchTerm);
 					setFilter(filter);
 				}}
