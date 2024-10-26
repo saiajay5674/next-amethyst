@@ -4,6 +4,9 @@ import { Box, IconButton, VStack, Text, HStack, Icon } from '@chakra-ui/react';
 import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
 import { StarIcon, SettingsIcon, ChevronDownIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import { useRouter } from 'next/navigation';
+import PanelButton from './PanelButton';
+import { Page } from '@/constants/page';
+import { BiSolidDashboard, BiSolidBank, BiMoney, BiSolidUserDetail, BiLogOut } from 'react-icons/bi';
 
 const NavigationPanel = () => {
 	const [isExpanded, setIsExpanded] = useState(false);
@@ -45,51 +48,36 @@ const NavigationPanel = () => {
 				variant='ghost'
 				color='white'
 			/>
-			<IconButton
-				icon={<StarIcon />}
-				onClick={toggleDrawer}
-				aria-label='Toggle Navigation'
-				alignSelf={isExpanded ? 'flex-end' : 'center'}
-				mt={4}
-				mb={8}
-				size='md'
-				variant='ghost'
-				color='white'
+			<PanelButton
+				isExpanded={isExpanded}
+				onClickFunction={() => navigateTo(Page.HOME)}
+				buttonIcon={<BiSolidDashboard />}
+				navigationLabel='Dashboard'
 			/>
-			<VStack spacing={4} align={isExpanded ? 'flex-start' : 'center'} p={4}>
-				<HStack spacing={3} cursor='pointer' onClick={() => navigateTo('/')} width='100%'>
-					<Icon as={StarIcon} color='white' />
-					{isExpanded && (
-						<Text fontSize='lg' fontWeight='bold' color='white'>
-							Home
-						</Text>
-					)}
-				</HStack>
-				<HStack spacing={3} cursor='pointer' onClick={() => navigateTo('/transactions')} width='100%'>
-					<Icon as={ChevronDownIcon} color='white' />
-					{isExpanded && (
-						<Text fontSize='lg' fontWeight='bold' color='white'>
-							Transactions
-						</Text>
-					)}
-				</HStack>
-				<HStack spacing={3} cursor='pointer' onClick={() => navigateTo('/settings')} width='100%'>
-					<Icon as={SettingsIcon} color='white' />
-					{isExpanded && (
-						<Text fontSize='lg' fontWeight='bold' color='white'>
-							Settings
-						</Text>
-					)}
-				</HStack>
-				<HStack spacing={3} cursor='pointer' onClick={() => navigateTo('/signin')} width='100%'>
-					<Icon as={ArrowForwardIcon} color='white' />
-					{isExpanded && (
-						<Text fontSize='lg' fontWeight='bold' color='white'>
-							Logout
-						</Text>
-					)}
-				</HStack>
-			</VStack>
+			<PanelButton
+				isExpanded={isExpanded}
+				onClickFunction={() => navigateTo(Page.TRANSACTIONS)}
+				buttonIcon={<BiMoney />} // Alternative icon: BiSolidWallet
+				navigationLabel='Transactions'
+			/>
+			<PanelButton
+				isExpanded={isExpanded}
+				onClickFunction={() => navigateTo(Page.HOME)}
+				buttonIcon={<BiSolidBank />}
+				navigationLabel='Accounts'
+			/>
+			<PanelButton
+				isExpanded={isExpanded}
+				onClickFunction={() => navigateTo(Page.HOME)}
+				buttonIcon={<BiSolidUserDetail />}
+				navigationLabel='Profile'
+			/>
+			<PanelButton
+				isExpanded={isExpanded}
+				onClickFunction={() => navigateTo(Page.SIGNIN)}
+				buttonIcon={<BiLogOut />}
+				navigationLabel='Logout'
+			/>
 		</Box>
 	);
 };
